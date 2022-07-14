@@ -1,107 +1,46 @@
-import Table from 'rc-table';
-const date = new Date().toDateString();
-const data = [
-  { name: date, one: 0, two: 70, key: 1, three: 40, four: 8, five: 41, six: 42, seven: 654, eight: 1212, nien: 45, ten: 22, eleven: 96 },
-  { name: date, one: 28, two: 70, key: 2, three: 40, four: 8, five: 0, six: 42, seven: 654, eight: 1212, nien: 45, ten: 22, eleven: 96 },
-  { name: date, one: 36, two: 70, key: 3, three: 0, four: 8, five: 41, six: 42, seven: 654, eight: 1212, nien: 45, ten: 22, eleven: 96 },
-  { name: date, one: 36, two: 70, key: 4, three: 40, four: 8, five: 41, six: 42, seven: 654, eight: 1212, nien: 45, ten: 22, eleven: 96 },
-  { name: date, one: 36, two: 0, key: 5, three: 40, four: 8, five: 41, six: 42, seven: 654, eight: 0, nien: 45, ten: 22, eleven: 96 },
-  { name: date, one: 36, two: 70, key: 6, three: 40, four: 8, five: 41, six: 42, seven: 654, eight: 1212, nien: 45, ten: 22, eleven: 96 },
-  { name: date, one: 36, two: 70, key: 7, three: 40, four: 8, five: 41, six: 42, seven: 654, eight: 1212, nien: 0, ten: 22, eleven: 96 },
-  { name: date, one: 36, two: 70, key: 8, three: 40, four: 8, five: 41, six: 42, seven: 654, eight: 1212, nien: 0, ten: 22, eleven: 96 },
-  { name: date, one: 36, two: 70, key: 9, three: 40, four: 8, five: 41, six: 42, seven: 654, eight: 1212, nien: 0, ten: 22, eleven: 96 },
-  { name: date, one: 36, two: 70, key: 10, three: 40, four: 8, five: 41, six: 42, seven: 654, eight: 1212, nien: 0, ten: 22, eleven: 96 },
-  { name: date, one: 36, two: 70, key: 11, three: 40, four: 8, five: 41, six: 42, seven: 654, eight: 1212, nien: 0, ten: 22, eleven: 96 },
-  { name: date, one: 36, two: 70, key: 12, three: 40, four: 8, five: 41, six: 42, seven: 654, eight: 1212, nien: 0, ten: 22, eleven: 96 },
-];
-const el = (value) => {
-  let className = "btn w-100 rounded rounded-0"
-  if (value < 1){
-    className += " "
-  }else{
-    className += " btn-success"  
-  }
-  return  <a href="/" className={className}>{value}</a>
-}
-const columns = [
-  {
-    title: "Day",
-    dataIndex: "name",
-    key: "name",  
-  },
-  {
-    title: "01:00",
-    dataIndex: "one",
-    key: "one",
-    render: el,
-  },
-  {
-    title: "02:00",
-    dataIndex: "two",
-    key: "two",
-    render: el,
-  },
-  {
-    title: "03:00",
-    dataIndex: "three",
-    key: "three",
-    render: el,
-  },
-  {
-    title: "04:00",
-    dataIndex: "four",
-    key: "four",
-    render: el,
-  },
-  {
-    title: "05:00",
-    dataIndex: "five",
-    key: "five",
-    render: el,
-  },
-  {
-    title: "06:00",
-    dataIndex: "six",
-    key: "six",
-    render: el,
-  },
-  {
-    title: "07:00",
-    dataIndex: "seven",
-    key: "seven",
-    render: el,
-  },
-  {
-    title: "08:00",
-    dataIndex: "eight",
-    key: "eight",
-    render: el,
-  },
-  {
-    title: "09:00",
-    dataIndex: "nien",
-    key: "nien",
-    render: el,
-  },
-  {
-    title: "10:00",
-    dataIndex: "ten",
-    key: "ten",
-    render: el,
-  },
-  {
-    title: "11:00",
-    dataIndex: "eleven",
-    key: "eleven",
-    render: el,
-  },
-];
+import axios from "axios";
+import { ParseApiResponse } from "./data.js"
+import { useEffect, useState } from "react"
 
 
-const myTable = () => {
+const MyTable = () => {
+  const hours = ["01:00 PM", "02:00 PM", "03:00 PM", "04:00 PM", "05:00 PM", "06:00 PM", "07:00 PM", "08:00 PM", "09:00 PM", "10:00 PM", "11:00 PM"]
+  let columns = [{title: "Day", dataIndex: "date", key: "date"}]
+  hours.forEach(hour => {columns.push({title: hour, dataIndex: "count", key: "hour"})})
+
+  const [data, setData] = useState([])
+
+  useEffect(() => {
+    const fetchData = async () => {
+      let response = await axios.get("http://127.0.0.1:8000/api/view-reservations/", {
+        headers: {
+        'Authorization': `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjU3ODMwNzkyLCJpYXQiOjE2NTc4MzA0OTIsImp0aSI6IjA3MmU5ODY5NjQ2MDQ3OTY4YzQ3NTE2ZGU0OWE3NTVhIiwidXNlcl9pZCI6MX0.lu-d2Lw3ZTrYvpGWpq3_k6wV7Mu80R3G-pvPii7aOaY`
+        }
+
+      })        
+      setData(ParseApiResponse(response.data))
+    }
+    fetchData()
+  }, [])
+
+
   return (
-    <Table columns={columns} data={data} />
+    <table>
+      <tr>
+        <th>Day</th>
+        {hours.map((hour, index) => <th key={index}>{hour}</th>)}
+      </tr>
+      {data.map((day, index) => {
+        return (
+          <tr key={index}>
+            <td>{day.date}</td>
+            {day.hours.map(hour => <td>{ hour.count }</td>)}
+          </tr>
+        )
+    })}
+    </table>
+
   )
 }
 
-export default myTable
+export default MyTable

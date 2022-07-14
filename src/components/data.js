@@ -101,38 +101,6 @@ let api_data = [
   }
 ]
 
-const createDataArray = (data) => {
-  // expect data to be an array of objects
-  let dates = data.map(item => new Date(item.date))
-  let start = new Date(Math.min(...dates))
-  let end = new Date(Math.max(...dates))
-  let current = start
-  let days = []
-  let hours = ["01:00 PM", "02:00 PM", "03:00 PM", "04:00 PM", "05:00 PM", "06:00 PM", "07:00 PM", "08:00 PM", "09:00 PM", "10:00 PM", "11:00 PM"]
-  while (current <= end){
-    let date = current.toLocaleDateString()
-    let currentData = data.filter(item => item.date === date)
-    let currentObject = {
-      date: date,
-      hours: []
-    }
-    hours.forEach(hour => {
-      let currentHourDate = currentData.filter(item => item.time === hour)
-      currentObject.hours.push({
-        hour: hour,
-        reservations: currentHourDate
-      })
-    })
-    days.push(currentObject)
-    current.setDate(current.getDate() + 1)
-  }
-  return days
-
-  // should return the following array
-  // days = [
-  //   {date: "22/07/22", hours: [{hour: "03:00 PM", reservations: [{name: "ahmed", phone: "234", is_outdoor: false, seats_number: 5}]}]},
-  // ]
-}
 
 const convert = (data) => {
   // data is an array of objects with each object has attributes: id, date, time, name, phone, is_outdoor, seats_number, created_at
@@ -199,13 +167,16 @@ const convert = (data) => {
 
 const fill = (table) => {
   // expectina and object like this
-  object = {
-    "2020-07-09": {
-      '06:00 PM': []
-    }
-  }
+  // object = {
+  //   "22/07/2022": {
+  //     '06:00 PM': []
+  //   }
+  // }
   let dates = Object.keys(table)
-  dates = dates.map(date => new Date(date))
+  dates = dates.map(date => {
+    const [day, month, year] = date.split('/')
+    return new Date(year, +month-1, day)
+  })
   let start = new Date(Math.min(...dates))
   let end = new Date(Math.max(...dates))
   let current = start
@@ -216,23 +187,30 @@ const fill = (table) => {
   //   {date: "22/07/22", hours: [{hour: "03:00 PM", reservations: [{name: "ahmed", phone: "234", is_outdoor: false, seats_number: 5}]}]},
   // ]
   while (current <= end){
-    let dateString = current.toLocaleDateString()
+    let dateString = current.toLocaleDateString("en-IE", {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+    })
     // day is an object with keys as hours and values are arrays of reservations objects
     let day = {
       date: dateString,
       hours: []
     } 
     if (dateString in table){
+      console.log("we have reservations for this date", dateString)
       hours.forEach(hour => {
         if (hour in table[dateString]){
           day.hours.push({
             hour: hour,
-            reservations: table[dateString][hour]
+            reservations: table[dateString][hour],
+            count: table[dateString][hour].length
           })
         }else{
           day.hours.push({
             hour: hour,
-            reservations: []
+            reservations: [],
+            count: 0
           })
         }
       })
@@ -240,7 +218,8 @@ const fill = (table) => {
       hours.forEach(hour => {
         day.hours.push({
           hour: hour,
-          reservations: []
+          reservations: [],
+          count: 0
         })
       })
     }
@@ -251,7 +230,8 @@ const fill = (table) => {
   return days
 }
 
-let obj1 = createDataArray(api_data)
+const ParseApiResponse = (data) => {
+  return fill(convert(data))
+}
 
-let obj2 = fill(convert(api_data))
-console.log(JSON.stringify(obj1) === JSON.stringify(obj2));
+export {ParseApiResponse, api_data}
