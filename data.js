@@ -101,7 +101,41 @@ let api_data = [
   }
 ]
 
+const createDataArray = (data) => {
+  // expect data to be an array of objects
+  let dates = data.map(item => new Date(item.date))
+  let start = new Date(Math.min(...dates))
+  let end = new Date(Math.max(...dates))
+  let current = start
+  let days = []
+  let hours = ["01:00 PM", "02:00 PM", "03:00 PM", "04:00 PM", "05:00 PM", "06:00 PM", "07:00 PM", "08:00 PM", "09:00 PM", "10:00 PM", "11:00 PM"]
+  while (current <= end){
+    let date = current.toLocaleDateString()
+    let currentData = data.filter(item => item.date === date)
+    let currentObject = {
+      date: date,
+      hours: []
+    }
+    hours.forEach(hour => {
+      let currentHourDate = currentData.filter(item => item.time === hour)
+      currentObject.hours.push({
+        hour: hour,
+        reservations: currentHourDate
+      })
+    })
+    days.push(currentObject)
+    current.setDate(current.getDate() + 1)
+  }
+  return days
+
+  // should return the following array
+  // days = [
+  //   {date: "22/07/22", hours: [{hour: "03:00 PM", reservations: [{name: "ahmed", phone: "234", is_outdoor: false, seats_number: 5}]}]},
+  // ]
+}
+
 const convert = (data) => {
+  // data is an array of objects with each object has attributes: id, date, time, name, phone, is_outdoor, seats_number, created_at
   let table = {}
   data.forEach(re => {
     if (re.date in table){
@@ -117,43 +151,107 @@ const convert = (data) => {
     }
   });
   return table
+  // return an object with keys as dates and values as arrays with objects with keys as hours and values objects with attributes: id, date, time, name, phone, is_outdoor, seats_number, created_at
+  // example of return value:
+  // {
+  //   "2020-07-09": {
+  //     "06:00 PM": [
+  //       {
+  //         "id": 1,
+  //         "date": "2020-07-09",
+  //         "time": "06:00 PM",
+  //         "name": "Mahmoud",
+  //         "phone": "+2011111111",
+  //         "is_outdoor": true,
+  //         "seats_number": 7,
+  //         "created_at": "2020-07-09T17:03:43.522806+03:00"
+  //       }
+  //     ],
+  //     "05:00 PM": [
+  //       {
+  //         "id": 1,
+  //         "date": "2020-07-09",
+  //         "time": "05:00 PM",
+  //         "name": "Mahmoud",
+  //         "phone": "+20111111111",
+  //         "is_outdoor": true,
+  //         "seats_number": 7,
+  //         "created_at": "2020-07-09T17:03:43.522806+03:00"
+  //       }
+  //     ]
+  //   },
+  //   "2020-07-10": {
+  //     "06:00 PM": [
+  //       {
+  //         "id": 2,
+  //         "date": "2020-07-10",
+  //         "time": "06:00 PM",
+  //         "name": "Ahmed",
+  //         "phone": "+2011111111",
+  //         "is_outdoor": true,
+  //         "seats_number": 7,
+  //         "created_at": "2020-07-09T17:25:54.333763+03:00"
+  //       }
+  //     ]
+  //   }
+  // }
 }
 
 const fill = (table) => {
-  let today = new Date()
+  // expectina and object like this
+  object = {
+    "2020-07-09": {
+      '06:00 PM': []
+    }
+  }
+  let dates = Object.keys(table)
+  dates = dates.map(date => new Date(date))
+  let start = new Date(Math.min(...dates))
+  let end = new Date(Math.max(...dates))
+  let current = start
   let days = []
   let hours = ["01:00 PM", "02:00 PM", "03:00 PM", "04:00 PM", "05:00 PM", "06:00 PM", "07:00 PM", "08:00 PM", "09:00 PM", "10:00 PM", "11:00 PM"]
-  while (Object.keys(table).length > 0){
-    let dateString = today.toLocaleDateString()
+  // the target array 
+  // days = [
+  //   {date: "22/07/22", hours: [{hour: "03:00 PM", reservations: [{name: "ahmed", phone: "234", is_outdoor: false, seats_number: 5}]}]},
+  // ]
+  while (current <= end){
+    let dateString = current.toLocaleDateString()
+    // day is an object with keys as hours and values are arrays of reservations objects
+    let day = {
+      date: dateString,
+      hours: []
+    } 
     if (dateString in table){
       hours.forEach(hour => {
         if (hour in table[dateString]){
-
+          day.hours.push({
+            hour: hour,
+            reservations: table[dateString][hour]
+          })
         }else{
-
+          day.hours.push({
+            hour: hour,
+            reservations: []
+          })
         }
       })
-
     }else{
-      days.push({dateString: hours.map((hour) => {
-        let hourObject = {}
-        hourObject[hour] = []
-        return hourObject
-      })})
+      hours.forEach(hour => {
+        day.hours.push({
+          hour: hour,
+          reservations: []
+        })
+      })
     }
-    
-    today.setDate(today.getDate() + 1)
-  }
+    days.push(day)
 
+    current.setDate(current.getDate() + 1)
+  }
   return days
 }
 
-// let obj = convert(api_data)
-// console.log(Object.keys(obj).length);
-// console.log(obj)
+let obj1 = createDataArray(api_data)
 
-// delete obj['08/07/2022']
-// console.log(Object.keys(obj).length);
-// console.log(obj)
-
-
+let obj2 = fill(convert(api_data))
+console.log(JSON.stringify(obj1) === JSON.stringify(obj2));
