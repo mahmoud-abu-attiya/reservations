@@ -10,11 +10,26 @@ const MyTable = () => {
 
   const [data, setData] = useState([])
 
+  const getCookie = (cname) => {
+    let name = cname + "=";
+    let decodedCookie = decodeURIComponent(document.cookie);
+    let ca = decodedCookie.split(';');
+    for(let i = 0; i <ca.length; i++) {
+      let c = ca[i];
+      while (c.charAt(0) === ' ') {
+        c = c.substring(1);
+      }
+      if (c.indexOf(name) === 0) {
+        return c.substring(name.length, c.length);
+      }
+    }
+    return "";
+  }
   useEffect(() => {
     const fetchData = async () => {
-      let response = await axios.get("http://127.0.0.1:8000/api/view-reservations/", {
+      let response = await axios.get("https://blgrv-api.orizon.qa/api/view-reservations/", {
         headers: {
-        'Authorization': `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjU3ODMwNzkyLCJpYXQiOjE2NTc4MzA0OTIsImp0aSI6IjA3MmU5ODY5NjQ2MDQ3OTY4YzQ3NTE2ZGU0OWE3NTVhIiwidXNlcl9pZCI6MX0.lu-d2Lw3ZTrYvpGWpq3_k6wV7Mu80R3G-pvPii7aOaY`
+        'Authorization': `Bearer ${getCookie("token")}`
         }
 
       })        
