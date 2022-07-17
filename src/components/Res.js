@@ -2,6 +2,7 @@ import axios from 'axios';
 import React from 'react'
 import { useSearchParams } from "react-router-dom";
 import { useState, useEffect } from 'react';
+import { getCookie } from "../App"
 
 
 
@@ -18,7 +19,7 @@ const Res = (props) => {
   useEffect(() => {
     axios.get(url, {
       headers:{
-        "Authorization": "Bearer " + props.token
+        "Authorization": "Bearer " + getCookie("token")
       }
     }).then((res)=>{
       setDataRes(res.data)

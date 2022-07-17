@@ -4,25 +4,25 @@ import Login from "./components/Login";
 import MyTable from "./components/MyTable";
 import {useState, useEffect} from "react"
 import Res from "./components/Res"
-
+const getCookie = (cname) => {
+  let name = cname + "=";
+  let decodedCookie = decodeURIComponent(document.cookie);
+  let ca = decodedCookie.split(';');
+  for(let i = 0; i <ca.length; i++) {
+    let c = ca[i];
+    while (c.charAt(0) === ' ') {
+      c = c.substring(1);
+    }
+    if (c.indexOf(name) === 0) {
+      return c.substring(name.length, c.length);
+    }
+  }
+  return "";
+}
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
   console.log("I'm rnning");
-  const getCookie = (cname) => {
-    let name = cname + "=";
-    let decodedCookie = decodeURIComponent(document.cookie);
-    let ca = decodedCookie.split(';');
-    for(let i = 0; i <ca.length; i++) {
-      let c = ca[i];
-      while (c.charAt(0) === ' ') {
-        c = c.substring(1);
-      }
-      if (c.indexOf(name) === 0) {
-        return c.substring(name.length, c.length);
-      }
-    }
-    return "";
-  }
+  
   const [token, setToken] = useState(getCookie("token"));
   useEffect(() => {
     console.log("i'm effect");
@@ -46,6 +46,7 @@ function App() {
 }
 
 export default App;
+export {getCookie}
 
 // import React, { Suspense, lazy } from 'react';
 
