@@ -27,7 +27,7 @@ const Res = (props) => {
         console.log(err);
         setSearchParams("/")
       })
-  }, [url, props.token, setSearchParams]);
+  }, [url, setSearchParams]);
   return (
     <div className="container">
       {dataRes.map((res) => {
