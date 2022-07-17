@@ -61,11 +61,9 @@ const Res = (props) => {
               <div className="btn btn-lg btn-danger">
                 <i className="fad fa-trash-alt"></i> Delete
               </div>
-              <div className="btn btn-lg btn-secondary">
-                <a href={"tel:" + res.phone}>
+                <a className="btn btn-lg btn-secondary" href={"tel:" + res.phone}>
                   <i className="fas fa-phone-alt"></i> Call
                 </a>
-              </div>
             </div>
           </div>
         );
