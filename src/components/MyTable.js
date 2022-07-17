@@ -29,7 +29,7 @@ const MyTable = (props) => {
         "https://blgrv-api.orizon.qa/api/view-reservations/",
         {
           headers: {
-            Authorization: "Bearer " + Cookies.get("token"),
+            Authorization: `Bearer ${Cookies.get("token")}`,
           },
         }
       );

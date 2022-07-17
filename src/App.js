@@ -15,9 +15,7 @@ function App() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [token, setToken] = useState(Cookies.get("token"));
   useEffect(() => {
-    if (Cookies.get("token") === undefined) {
-      setLoggedIn(false);
-    } else {
+    if (Cookies.get("token") !== undefined) {
       setToken(Cookies.get("token"));
       setLoggedIn(true);
     }
@@ -29,7 +27,13 @@ function App() {
           <Route
             exact
             path="/"
-            element={<Login login={setLoggedIn} setToken={setToken} />}
+            element={
+              loggedIn ? (
+                <Navigate to="/table" />
+              ) : (
+                <Login login={setLoggedIn} setToken={setToken} />
+              )
+            }
           />
           <Route
             path="/table"

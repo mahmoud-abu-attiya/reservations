@@ -17,7 +17,7 @@ const Res = (props) => {
     axios
       .get(url, {
         headers: {
-          Authorization: "Bearer " + Cookies.get("token"),
+          Authorization: `Bearer ${Cookies.get("token")}`,
         },
       })
       .then((res) => {
