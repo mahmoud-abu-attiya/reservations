@@ -6,6 +6,7 @@ import {useState, useEffect} from "react"
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
+  const [token, setToken] = useState('');
   const getCookie = (cname) => {
     let name = cname + "=";
     let decodedCookie = decodeURIComponent(document.cookie);
@@ -24,6 +25,7 @@ function App() {
   useEffect(() => {
     if(getCookie("token") !== ""){
       setLoggedIn(true)
+      setToken(getCookie('token'))
     }
 
   }, []);
@@ -31,8 +33,8 @@ function App() {
     <div className="App">
       <Router>
         <Routes>
-          <Route exact path="/"  element={ loggedIn ? ( <Navigate to="/table"/> ) : ( <Login login={setLoggedIn}/> ) }/>
-          <Route path="/table" element={ loggedIn ? ( <MyTable /> ) : (<Navigate to="/"/> ) }/>
+          <Route exact path="/"  element={ loggedIn ? ( <Navigate to="/table"/> ) : ( <Login login={setLoggedIn} setToken={setToken}/> ) }/>
+          <Route path="/table" element={ loggedIn ? ( <MyTable token={token} /> ) : (<Navigate to="/"/> ) }/>
         </Routes>
       </Router>
     </div>

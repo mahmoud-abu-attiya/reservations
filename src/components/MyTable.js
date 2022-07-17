@@ -3,7 +3,7 @@ import { ParseApiResponse } from "./data.js"
 import { useEffect, useState } from "react"
 
 
-const MyTable = () => {
+const MyTable = (props) => {
   const hours = ["01:00 PM", "02:00 PM", "03:00 PM", "04:00 PM", "05:00 PM", "06:00 PM", "07:00 PM", "08:00 PM", "09:00 PM", "10:00 PM", "11:00 PM"]
   let columns = [{title: "Day", dataIndex: "date", key: "date"}]
   hours.forEach(hour => {columns.push({title: hour, dataIndex: "count", key: "hour"})})
@@ -29,7 +29,7 @@ const MyTable = () => {
     const fetchData = async () => {
       let response = await axios.get("https://blgrv-api.orizon.qa/api/view-reservations/", {
         headers: {
-        'Authorization': `Bearer ${getCookie("token")}`
+        'Authorization': `Bearer ${props.token}`
         }
 
       })        

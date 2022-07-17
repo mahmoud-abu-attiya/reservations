@@ -22,6 +22,7 @@ const Login = (props) => {
         console.log(res);
         console.log(res.data.access);
         setCookie("token", res.data.access)
+        props.setToken(res.data.access)
         props.login(true)
       })
       .catch((err)=>{
