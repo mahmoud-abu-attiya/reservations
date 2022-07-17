@@ -2,7 +2,7 @@ import axios from "axios";
 import React from "react";
 import { useSearchParams } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { getCookie } from "../App";
+import Cookies from "js-cookie";
 
 const Res = (props) => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -17,7 +17,7 @@ const Res = (props) => {
     axios
       .get(url, {
         headers: {
-          Authorization: "Bearer " + getCookie("token"),
+          Authorization: "Bearer " + Cookies.get("token"),
         },
       })
       .then((res) => {

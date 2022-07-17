@@ -3,18 +3,15 @@ import logo from "../images/logo3.png";
 import { useEffect } from "react";
 import axios from "axios";
 import Loading from "./Loading";
+import Cookies from "js-cookie";
 
 const Login = (props) => {
-  // const [logged, setLogged] = useState(false);
   useEffect(() => {
     let inpUsername = document.getElementById("floatingInput");
     let inpPassword = document.getElementById("floatingPassword");
     let alert = document.querySelector(".alert")
     let form = document.querySelector(".login form");
     let loading = document.querySelector(".loading");
-    // const setCookie = (cname, cvalue) => {
-    //   document.cookie = cname + "=" + cvalue + ";path=/";
-    // }
     const submitForm = () => {
       let loginData = {
         username: inpUsername.value,
@@ -23,10 +20,9 @@ const Login = (props) => {
       axios
         .post("https://blgrv-api.orizon.qa/api/token/", loginData)
         .then((res) => {
-          document.cookie = "token=" + res.data.access + ";path=/";
+          Cookies.set('token', res.data.access, { path: '/' })
           console.log(res.data.access);
           props.login(true);
-          // setLogged(true)
         })
         .catch((err) => {
           console.log(err);
