@@ -19,10 +19,10 @@ const Login = (props) => {
       }
       axios.post("https://blgrv-api.orizon.qa/api/token/" , loginData)
       .then((res)=>{
-        console.log(res);
-        console.log(res.data.access);
+        // console.log(res);
         setCookie("token", res.data.access)
-        props.setToken(res.data.access)
+        console.log(res.data.access);
+        // props.setToken(res.data.access)
         props.login(true)
       })
       .catch((err)=>{
@@ -57,7 +57,7 @@ const Login = (props) => {
           />
           <label htmlFor="floatingPassword">Password</label>
         </div>
-        <button className="btn btn-secondary my-3">Submit</button>
+        <input type="submit" className="btn btn-secondary my-3" value="Submit" />
       </form>
       </div>
     </div>

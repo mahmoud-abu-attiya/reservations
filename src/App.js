@@ -21,16 +21,12 @@ const getCookie = (cname) => {
 }
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
-  console.log("I'm rnning");
-  
   const [token, setToken] = useState(getCookie("token"));
   useEffect(() => {
-    console.log("i'm effect");
     if(getCookie("token") !== ""){
       setLoggedIn(true)
       setToken(getCookie('token'))
     }
-
   }, [token]);
   return (
     <div className="App">
