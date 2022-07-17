@@ -10,7 +10,7 @@ const Login = (props) => {
     let inpPassword = document.getElementById("floatingPassword")
     let form = document.querySelector(".login form")
     const setCookie = (cname, cvalue) => {
-      document.cookie = cname + "=" + cvalue + ";path=/;SameSite=none";
+      document.cookie = cname + "=" + cvalue + ";path=/";
     }
     const submitForm = () => {
       let loginData = {
