@@ -29,13 +29,7 @@ function App() {
           <Route
             exact
             path="/"
-            element={
-              loggedIn ? (
-                <Navigate to="/table" />
-              ) : (
-                <Login login={setLoggedIn} setToken={setToken} />
-              )
-            }
+            element={<Login login={setLoggedIn} setToken={setToken} />}
           />
           <Route
             path="/table"
