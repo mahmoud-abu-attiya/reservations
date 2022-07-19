@@ -20,7 +20,7 @@ const Login = (props) => {
       axios
         .post("https://blgrv-api.orizon.qa/api/token/", loginData)
         .then((res) => {
-          Cookies.set("token", res.data.access, { expires: 365, path: "/" });
+          Cookies.set("token", res.data.access, { path: "/" , sameSite: "none", secure: true, expires: false });
           props.login(true);
         })
         .catch((err) => {
