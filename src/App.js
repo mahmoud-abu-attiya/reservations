@@ -13,13 +13,11 @@ import Cookies from "js-cookie";
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
-  const [token, setToken] = useState(Cookies.get("token"));
   useEffect(() => {
     if (Cookies.get("token") !== undefined) {
-      setToken(Cookies.get("token"));
       setLoggedIn(true);
     }
-  }, [token]);
+  }, []);
   return (
     <div className="App">
       <Router>
@@ -31,17 +29,17 @@ function App() {
               loggedIn ? (
                 <Navigate to="/table" />
               ) : (
-                <Login login={setLoggedIn} setToken={setToken} />
+                <Login login={setLoggedIn} />
               )
             }
           />
           <Route
             path="/table"
-            element={loggedIn ? <MyTable token={token} /> : <Navigate to="/" />}
+            element={loggedIn ? <MyTable /> : <Navigate to="/" />}
           />
           <Route
             path="/reservations"
-            element={<Res token={token} />}
+            element={<Res />}
           />
         </Routes>
       </Router>

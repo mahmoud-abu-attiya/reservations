@@ -3,7 +3,7 @@ import { ParseApiResponse } from "./data.js";
 import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 
-const MyTable = (props) => {
+const MyTable = () => {
   const hours = [
     "01:00 PM",
     "02:00 PM",
@@ -39,38 +39,54 @@ const MyTable = (props) => {
   }, []);
 
   return (
-    <table>
-      <thead>
-        <tr>
-          <th className="bg-secondary">Day</th>
-          {hours.map((hour, index) => (
-            <th className="bg-secondary" key={index}>{hour}</th>
-          ))}
-        </tr>
-      </thead>
-      <tbody>
-        {data.map((day, index) => {
-          return (
-            <tr key={index}>
-              <td>
-                <a className="btn btn-primary rounded-0 w-100" href={`/reservations?date=${encodeURIComponent(day.date)}`}>
-                  {day.date}
-                </a>
-              </td>
-              {day.hours.map((hour, index) => {
-                return (
-                  <td key={index}>
-                    <a className={hour.count !== 0 ? "btn btn-success rounded-0 w-100" : "btn btn-light rounded-0 w-100"} href={`/reservations?date=${encodeURIComponent(day.date)}&time=${encodeURIComponent(hour.hour)}`} >
-                      {hour.count}
-                    </a>
-                  </td>
-                );
-              })}
-            </tr>
-          );
-        })}
-      </tbody>
-    </table>
+    <>
+      <table>
+        <thead>
+          <tr>
+            <th className="bg-secondary">Day</th>
+            {hours.map((hour, index) => (
+              <th className="bg-secondary" key={index}>
+                {hour}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {data.map((day, index) => {
+            return (
+              <tr key={index}>
+                <td>
+                  <a
+                    className="btn btn-primary rounded-0 w-100"
+                    href={`/reservations?date=${encodeURIComponent(day.date)}`}
+                  >
+                    {day.date}
+                  </a>
+                </td>
+                {day.hours.map((hour, index) => {
+                  return (
+                    <td key={index}>
+                      <a
+                        className={`btn rounded-0 w-100 ${hour.count !== 0 ? "btn-success" : "btn-light"}`}
+                        href={
+                          hour.count === 0
+                            ? "javascript:alert('There is no resrvations here !')"
+                            : `/reservations?date=${encodeURIComponent(
+                                day.date
+                              )}&time=${encodeURIComponent(hour.hour)}`
+                        }
+                      >
+                        {hour.count}
+                      </a>
+                    </td>
+                  );
+                })}
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </>
   );
 };
 

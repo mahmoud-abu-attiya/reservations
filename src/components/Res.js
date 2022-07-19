@@ -4,7 +4,7 @@ import { useSearchParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Cookies from "js-cookie";
 
-const Res = (props) => {
+const Res = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const date = searchParams.get("date");
   const time = searchParams.get("time");
@@ -12,6 +12,17 @@ const Res = (props) => {
   let url = "https://blgrv-api.orizon.qa/api/view-reservations/?date=" + date;
   if (time) {
     url += "&time=" + time;
+  }
+  const handelDelete = (id)=>{
+    axios.delete(`https://blgrv-api.orizon.qa/api/delete-reservation/${id}/`, {
+      headers: {
+        Authorization: `Bearer ${Cookies.get("token")}`,
+      },
+    })
+    .then((res)=>{
+      setDataRes(dataRes.filter((el)=>el.id !== id))
+      console.log(res);
+    })
   }
   useEffect(() => {
     axios
@@ -22,6 +33,7 @@ const Res = (props) => {
       })
       .then((res) => {
         setDataRes(res.data);
+        
       })
       .catch((err) => {
         console.log(err);
@@ -58,9 +70,10 @@ const Res = (props) => {
               </div>
             </div>
             <div className="res_btns d-flex gap-3">
-              <div className="btn btn-lg btn-danger">
+              <button className="delete btn btn-lg btn-danger" onClick={()=>{handelDelete(res.id)}} >
                 <i className="fad fa-trash-alt"></i> Delete
-              </div>
+              </button>
+              {/* <button onClick={handelDelete()}>click</button> */}
                 <a className="btn btn-lg btn-secondary" href={"tel:" + res.phone}>
                   <i className="fas fa-phone-alt"></i> Call
                 </a>
