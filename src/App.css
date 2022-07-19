@@ -46,3 +46,11 @@ table{
 .alert{
   display: none;
 }
+.filter .date input{
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  padding: 5px 10px;
+}
+.filter .date {
+  margin: 20px 0;
+}

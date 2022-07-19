@@ -35,7 +35,7 @@ function App() {
           />
           <Route
             path="/table"
-            element={loggedIn ? <MyTable /> : <Navigate to="/" />}
+            element={loggedIn ? <MyTable cookies={setLoggedIn} /> : <Navigate to="/" />}
           />
           <Route
             path="/reservations"
