@@ -42,6 +42,10 @@ const Res = () => {
   }, [url, setSearchParams]);
   return (
     <div className="container">
+      <a className="back-btn" href="/table">
+        <i class="fas fa-angle-left"></i>
+        Go Back
+      </a>
       {dataRes.map((res) => {
         return (
           <div
@@ -70,13 +74,18 @@ const Res = () => {
               </div>
             </div>
             <div className="res_btns d-flex gap-3">
-              <button className="delete btn btn-lg btn-danger" onClick={()=>{handelDelete(res.id)}} >
+              <button
+                className="delete btn btn-lg btn-danger"
+                onClick={() => {
+                  handelDelete(res.id);
+                }}
+              >
                 <i className="fad fa-trash-alt"></i> Delete
               </button>
               {/* <button onClick={handelDelete()}>click</button> */}
-                <a className="btn btn-lg btn-secondary" href={"tel:" + res.phone}>
-                  <i className="fas fa-phone-alt"></i> Call
-                </a>
+              <a className="btn btn-lg btn-secondary" href={"tel:" + res.phone}>
+                <i className="fas fa-phone-alt"></i> Call
+              </a>
             </div>
           </div>
         );
