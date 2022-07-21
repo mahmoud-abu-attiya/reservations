@@ -37,13 +37,11 @@ const MyTable = (props) => {
     const fetchData = async () => {
       let response = await axios
         .get(
-          `https://belgravia.qa/api/view-reservations/?
-        date_gt=${startDate.toLocaleDateString("en-IE", {
+          `https://belgravia.qa/api/view-reservations/?date_gt=${startDate.toLocaleDateString("en-IE", {
           year: "numeric",
           month: "2-digit",
           day: "2-digit",
-        })}
-        &date_lt=${endDate.toLocaleDateString("en-IE", {
+        })}&date_lt=${endDate.toLocaleDateString("en-IE", {
           year: "numeric",
           month: "2-digit",
           day: "2-digit",
