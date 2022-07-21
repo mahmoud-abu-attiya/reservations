@@ -9,12 +9,12 @@ const Res = () => {
   const date = searchParams.get("date");
   const time = searchParams.get("time");
   const [dataRes, setDataRes] = useState([]);
-  let url = "https://blgrv-api.orizon.qa/api/view-reservations/?date=" + date;
+  let url = "https://belgravia.qa/api/view-reservations/?date=" + date;
   if (time) {
     url += "&time=" + time;
   }
   const handelDelete = (id)=>{
-    axios.delete(`https://blgrv-api.orizon.qa/api/delete-reservation/${id}/`, {
+    axios.delete(`https://belgravia.qa/api/delete-reservation/${id}/`, {
       headers: {
         Authorization: `Bearer ${Cookies.get("token")}`,
       },

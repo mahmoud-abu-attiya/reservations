@@ -18,7 +18,7 @@ const Login = (props) => {
         password: inpPassword.value,
       };
       axios
-        .post("https://blgrv-api.orizon.qa/api/token/", loginData)
+        .post("https://belgravia.qa/api/token/", loginData)
         .then((res) => {
           Cookies.set("token", res.data.access, { path: "/" , sameSite: "none", secure: true, expires: false });
           props.login(true);

@@ -37,7 +37,7 @@ const MyTable = (props) => {
     const fetchData = async () => {
       let response = await axios
         .get(
-          `https://blgrv-api.orizon.qa/api/view-reservations/?
+          `https://belgravia.qa/api/view-reservations/?
         date_gt=${startDate.toLocaleDateString("en-IE", {
           year: "numeric",
           month: "2-digit",
